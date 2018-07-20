@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application name="HC">
+	<data-model>
+		<entity name="Target"> 
+			<attribute name="name" datatype="string" searchable="yes"/>
+			<attribute name="clusterCount" datatype="integer" />
+			<attribute name="modifiedDate" datatype="datetime" />
+			<attribute name="features" datatype="Feature" relationtype="1-n" parent="yes"/>
+		</entity>
+		<entity name="Feature"> 
+			<attribute name="name" datatype="string" searchable="yes"/>
+			<attribute name="axis" datatype="string" />
+			<attribute name="type" datatype="string" />
+			<attribute name="modifiedDate" datatype="datetime" />
+			<attribute name="target" datatype="Target" relationtype="n-1" parent="no" />
+		</entity>
+		<entity name="Player"> 
+			<attribute name="name" datatype="string" searchable="yes"/>
+			<attribute name="coordinates" datatype="Coordinate" relationtype="1-n" parent="yes"/>
+			<attribute name="goals" datatype="Goal" relationtype="1-n" parent="yes"/>
+			<attribute name="cluster" datatype="Cluster" relationtype="n-1" parent="no" />
+		</entity>
+		
+		<entity name="Coordinate" flexibleprop="yes"> 
+			<attribute name="modifiedDate" datatype="datetime" />
+			<attribute name="player" datatype="Player"  relationtype="n-1" parent="no" />
+			<attribute name="target" datatype="Target" relationtype="n-1" parent="no" />
+		</entity>
+		
+		<entity name="Goal" flexibleprop="yes"> 
+			<attribute name="player" datatype="Player" relationtype="n-1" parent="no" />
+			<attribute name="modifiedDate" datatype="datetime" />
+			<attribute name="target" datatype="Target" relationtype="n-1" parent="no" />
+		</entity>
+
+		<entity name="Status"> 
+			<attribute name="progress" datatype="double" />
+			<attribute name="cluster" datatype="integer" searchable="yes"/>
+			<attribute name="modifiedDate" datatype="datetime" />
+			<attribute name="player" datatype="Player"  relationtype="n-1" parent="no" />
+			<attribute name="target" datatype="Target" relationtype="n-1" parent="no" />
+		</entity>
+		
+		<entity name="Redemption"> 
+			<attribute name="amount" datatype="integer" />
+			<attribute name="modifiedDate" datatype="datetime" />
+			<attribute name="player" datatype="Player"  relationtype="n-1" parent="no" />
+		</entity>
+
+	</data-model>
+</application>

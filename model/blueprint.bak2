@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application name="CRM">
+	<data-model>
+		<entity name="Customer">
+			<attribute name="name" datatype="string"/>
+			<attribute name="address" datatype="string"/>
+			<attribute name="photo" datatype="file"/>
+			<attribute name="saleOrder" datatype="SaleOrder" relationtype="1-n" parent="yes"/>
+		</entity>
+		<entity name="SaleOrder">
+			<attribute name="description" datatype="string"/>
+			<attribute name="amount" datatype="integer"/>
+			<attribute name="orderDate" datatype="date"/>
+			<attribute name="price" datatype="double"/>
+			<attribute name="customer" datatype="Customer" relationtype="n-1" parent="no"/>
+		</entity>
+	</data-model>
+</application>

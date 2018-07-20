@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application name="Test">
+	<data-model>
+		<entity name="Employee"> 
+			<attribute name="firstname" datatype="string" searchable="yes"/>
+			<attribute name="lastname" datatype="string" searchable="yes"/>
+			<attribute name="birthday" datatype="date"/>
+			<attribute name="photo" datatype="file"/>
+			<attribute name="salary" datatype="integer" searchable="yes"/>
+			<attribute name="position" datatype="string" searchable="yes"/>
+			<attribute name="address" datatype="Address" relationtype="1-1" parent="yes"/>
+			<attribute name="phone" datatype="Phone" relationtype="1-n" parent="yes"/>
+			<query name="findByMoreThanSalary" statement="ent.salary >= :param1">
+				<param name="param1" datatype="integer"/>
+			</query>
+			<query name="findByFirstnameAndLastname" statement="ent.firstname LIKE :param1 AND ent.lastname LIKE :param2">
+				<param name="param1" datatype="string"/>
+				<param name="param2" datatype="string"/>
+			</query>
+		</entity>
+
+		<entity name="Address"> 
+			<attribute name="houseNo" datatype="string" />
+			<attribute name="street" datatype="string" />
+			<attribute name="province" datatype="string" />	
+			<attribute name="employee" datatype="Employee" relationtype="1-1" parent="no" />
+		</entity>
+
+		<entity name="Phone"> 
+			<attribute name="label" datatype="string" />
+			<attribute name="number" datatype="string" searchable="yes"/>
+			<attribute name="employee" datatype="Employee" relationtype="n-1" parent="no" />
+		</entity>
+	</data-model>
+</application>

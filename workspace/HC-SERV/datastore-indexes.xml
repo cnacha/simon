@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<datastore-indexes autoGenerate="false">
+
+	<datastore-index kind="Target" ancestor="false">
+		<property name="name" direction="asc" />
+	</datastore-index>
+	<datastore-index kind="Feature" ancestor="false">
+		<property name="name" direction="asc" />
+		<property name="targetId" direction="asc" />
+	</datastore-index>
+	<datastore-index kind="Player" ancestor="false">
+		<property name="name" direction="asc" />
+		<property name="clusterId" direction="asc" />
+	</datastore-index>
+	<datastore-index kind="Coordinate" ancestor="false">
+		<property name="playerId" direction="asc" />
+		<property name="targetId" direction="asc" />
+	</datastore-index>
+	<datastore-index kind="Goal" ancestor="false">
+		<property name="playerId" direction="asc" />
+		<property name="targetId" direction="asc" />
+	</datastore-index>
+	<datastore-index kind="Status" ancestor="false">
+		<property name="cluster" direction="asc" />
+		<property name="playerId" direction="asc" />
+		<property name="targetId" direction="asc" />
+	</datastore-index>
+	<datastore-index kind="Redemption" ancestor="false">
+		<property name="playerId" direction="asc" />
+	</datastore-index>
+ 
+</datastore-indexes>
+	

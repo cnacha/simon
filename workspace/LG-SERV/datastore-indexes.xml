@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<datastore-indexes autoGenerate="false">
+
+	<datastore-index kind="Patient" ancestor="false">
+		<property name="firstname" direction="asc" />
+	</datastore-index>
+	<datastore-index kind="LocationLog" ancestor="false">
+		<property name="patientId" direction="asc" />
+	</datastore-index>
+	<datastore-index kind="EmRequest" ancestor="false">
+		<property name="patientId" direction="asc" />
+		<property name="emCenterId" direction="asc" />
+	</datastore-index>
+	<datastore-index kind="EmRequestStatusLog" ancestor="false">
+		<property name="emRequestId" direction="asc" />
+	</datastore-index>
+	<datastore-index kind="CareGiver" ancestor="false">
+		<property name="firstname" direction="asc" />
+	</datastore-index>
+	<datastore-index kind="CarePermit" ancestor="false">
+		<property name="patientId" direction="asc" />
+		<property name="careGiverId" direction="asc" />
+	</datastore-index>
+	<datastore-index kind="EmCenter" ancestor="false">
+		<property name="name" direction="asc" />
+	</datastore-index>
+	<datastore-index kind="Vehicle" ancestor="false">
+		<property name="number" direction="asc" />
+		<property name="emCenterId" direction="asc" />
+	</datastore-index>
+	<datastore-index kind="DistanceAlert" ancestor="false">
+		<property name="patientId" direction="asc" />
+	</datastore-index>
+ 
+</datastore-indexes>
+	

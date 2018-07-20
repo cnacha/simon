@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application name="LG">
+	<data-model>
+		<entity name="Patient"> 
+			<attribute name="firstname" datatype="string" searchable="yes"/>
+			<attribute name="lastname" datatype="string" />
+			<attribute name="birthday" datatype="date"/>
+			<attribute name="photo" datatype="file"/>
+			<attribute name="address" datatype="string"/>
+			<attribute name="disease" datatype="string"/>
+			<attribute name="homeLat" datatype="double" />
+			<attribute name="homeLong" datatype="double" />
+			<attribute name="emRequest" datatype="EmRequest" relationtype="1-n" parent="yes"/>
+		</entity>
+		
+		<entity name="LocationLog"> 
+			<attribute name="patient" datatype="Patient" relationtype="n-1" parent="no" />
+			<attribute name="locLat" datatype="double" />
+			<attribute name="locLong" datatype="double" />
+			<attribute name="logDate" datatype="datetime" />
+		</entity>
+
+		<entity name="EmRequest"> 
+			<attribute name="submitDate" datatype="datetime" />
+			<attribute name="patient" datatype="Patient" relationtype="n-1" parent="no" />
+			<attribute name="emCenter" datatype="EmCenter" relationtype="n-1" parent="no" />
+			<attribute name="statusLog" datatype="EmRequestStatusLog" relationtype="1-n" parent="yes"/>
+		</entity>
+		<entity name="EmRequestStatusLog"> 
+			<attribute name="status" datatype="string"/>
+			<attribute name="note" datatype="string"/>
+			<attribute name="logDate" datatype="datetime" />
+			<attribute name="emRequest" datatype="EmRequest" relationtype="n-1" parent="no" />
+		</entity>
+		
+		<entity name="CareGiver"> 
+			<attribute name="firstname" datatype="string" searchable="yes"/>
+			<attribute name="lastname" datatype="string" />
+			<attribute name="address" datatype="string"/>
+			<attribute name="phone" datatype="string"/>
+			<attribute name="email" datatype="string"/>
+			<attribute name="carePermit" datatype="CarePermit" relationtype="1-n" parent="yes"/>
+		</entity>
+		<entity name="CarePermit"> 
+			<attribute name="patient" datatype="Patient" relationtype="n-1" parent="no" />
+			<attribute name="careGiver" datatype="CareGiver" relationtype="n-1" parent="no"/>
+		</entity>
+		
+		<entity name="EmCenter"> 
+			<attribute name="name" datatype="string" searchable="yes"/>
+			<attribute name="description" datatype="string" />
+			<attribute name="locLat" datatype="double"/>
+			<attribute name="locLong" datatype="double"/>
+			<attribute name="vehicle" datatype="Vehicle" relationtype="1-n" parent="yes"/>
+		</entity>
+		
+		
+		<entity name="Vehicle"> 
+			<attribute name="number" datatype="string" searchable="yes"/>
+			<attribute name="description" datatype="string" />
+			<attribute name="emCenter" datatype="EmCenter" relationtype="n-1" parent="no"/>
+		</entity>
+		
+		<entity name="DistanceAlert"> 
+			<attribute name="patient" datatype="Patient" relationtype="n-1" parent="no" />
+			<attribute name="status" datatype="string" />
+			<attribute name="distance" datatype="double" />
+			<attribute name="logDate" datatype="datetime" />
+		</entity>
+		
+	</data-model>
+</application>

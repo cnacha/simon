@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application name="Calendar">
+	<data-model>
+		<entity name="Schedule">
+			<attribute name="description" datatype="string"/>
+			<attribute name="startDate" datatype="date"/>
+			<attribute name="endDate" datatype="date"/>
+			<attribute name="type" datatype="string"/>
+			<query name="findByType" statement="ent.type = :param1">
+				<param name="param1" datatype="string"/>
+			</query>
+			<query name="findByMonthYear" statement="MONTH(ent.startDate) = :param1 ) AND YEAR(ent.startDate) = :param2">
+				<param name="param1" datatype="integer"/>
+				<param name="param2" datatype="integer"/>
+			</query>
+		</entity>
+	</data-model>
+</application>

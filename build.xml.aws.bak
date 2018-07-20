@@ -1,0 +1,224 @@
+<?xml version="1.0"?>
+
+<project name="SIMON" default="main" basedir=".">
+
+    <target name="init">
+		<property file="ant.env"/>
+
+        <property name="project" value="SIMON (Simplified Modelling Object Notation)"/>
+		<property name="currentversion" value="0.1"/>
+        <property file="merf.properties"/>
+		
+		<property name="adaptor-web" value="spring-mvc"/>
+		<property name="adaptor-service" value="aws-dynamodb"/>
+		<property name="appname" value="CRM"/>
+		<property name="app-serv-dir" value="${appname}-SERV"/>
+		<property name="app-web-dir" value="${appname}-WEB"/>
+		
+		<!-- generic directory -->
+		<property name="builddir" value="./build"/>
+		<property name="modeldir" value="./model"/>
+		<property name="workspace" value="./workspace"/>
+		
+		<!-- specific target directory -->
+		<property name="modelfile" value="${modeldir}/blueprint.xml"/>
+        <property name="adaptordir-web" value="./adaptor/${adaptor-web}"/>
+		<property name="xsltdir-web" value="${adaptordir-web}/xslt"/>
+		<property name="configdir-web" value="${adaptordir-web}/config"/>
+		<property name="libdir-web" value="${adaptordir-web}/lib"/>
+		
+		<property name="adaptordir-service" value="./adaptor/${adaptor-service}"/>
+		<property name="xsltdir-service" value="${adaptordir-service}/xslt"/>
+		<property name="configdir-service" value="${adaptordir-service}/config"/>
+		<property name="libdir-service" value="${adaptordir-service}/lib"/>
+
+        <property name="saxonlib" value="./lib/saxon9he.jar"/> 
+		<property name="service-lib" value="${libdir-service}/aws-java-sdk-1.6.3.jar;
+				${libdir-service}/aws-java-sdk-flow-build-tools-1.6.3.jar;
+				${libdir-service}/aspectjrt.jar;
+				${libdir-service}/aspectjweaver.jar;
+				${libdir-service}/commons-codec-1.3.jar;
+				${libdir-service}/commons-logging-1.1.1.jar;
+				${libdir-service}/freemarker-2.3.18.jar;
+				${libdir-service}/httpclient-4.2.3.jar;
+				${libdir-service}/httpcore-4.2.jar;
+				${libdir-service}/jackson-annotations-2.1.1.jar;
+				${libdir-service}/jackson-core-2.1.1.jar;
+				${libdir-service}/jackson-databind-2.1.1.jar;
+				${libdir-service}/mail-1.4.3.jar;
+				${libdir-service}/spring-beans-3.0.7.jar;
+				${libdir-service}/spring-context-3.0.7.jar;
+				${libdir-service}/spring-core-3.0.7.jar;
+				${libdir-service}/stax-1.2.0.jar;
+				${libdir-service}/stax-api-1.0.1.jar;
+				"/> 
+		<property name="web-lib" value="${libdir-web}/commons-fileupload-1.2.2.jar; 
+				${libdir-web}/jboss-servlet-api_3.0_spec-1.0.0.Final.jar; 
+				${libdir-web}/lib/commons-io-2.4.jar;
+				${libdir-web}/commons-logging-1.1.1.jar;
+				${libdir-web}/hibernate-core-4.0.1.Final.jar;
+				${libdir-web}/jstl.jar;
+				${libdir-web}/mybatis-3.1.1.jar;
+				${libdir-web}/mysql-connector-java-5.1.18-bin.jar;
+				${libdir-web}/org.springframework.aop-3.1.0.RC2.jar;
+				${libdir-web}/org.springframework.asm-3.1.0.RC2.jar;
+				${libdir-web}/org.springframework.aspects-3.1.0.RC2.jar;
+				${libdir-web}/org.springframework.beans-3.1.0.RC2.jar;
+				${libdir-web}/org.springframework.context.support-3.1.0.RC2.jar;
+				${libdir-web}/org.springframework.context-3.1.0.RC2.jar;
+				${libdir-web}/org.springframework.core-3.1.0.RC2.jar;
+				${libdir-web}/org.springframework.expression-3.1.0.RC2.jar;
+				${libdir-web}/org.springframework.instrument.tomcat-3.1.0.RC2.jar;
+				${libdir-web}/org.springframework.instrument-3.1.0.RC2.jar;
+				${libdir-web}/org.springframework.jdbc-3.1.0.RC2.jar;
+				${libdir-web}/org.springframework.jms-3.1.0.RC2.jar;
+				${libdir-web}/org.springframework.orm-3.1.0.RC2.jar;
+				${libdir-web}/org.springframework.oxm-3.1.0.RC2.jar;
+				${libdir-web}/org.springframework.test-3.1.0.RC2.jar;
+				${libdir-web}/org.springframework.transaction-3.1.0.RC2.jar;
+				${libdir-web}/org.springframework.web.portlet-3.1.0.RC2.jar;
+				${libdir-web}/org.springframework.web.servlet-3.1.0.RC2.jar;
+				${libdir-web}/org.springframework.web.struts-3.1.0.RC2.jar;
+				${libdir-web}/org.springframework.web-3.1.0.RC2.jar;
+				${libdir-web}/spring-security-config-3.1.3.RELEASE.jar;
+				${libdir-web}/spring-security-web-3.1.3.RELEASE.jar;
+				${libdir-web}/spring-security-core-3.1.3.RELEASE.jar"/> 
+		<property name="fullclasspath" value="${saxonlib};${service-lib};${web-lib}"/>
+        <tstamp/>
+        <echo/>
+        <echo message="Project: ${project}    Version: ${currentversion}    Time: ${TODAY} ${TSTAMP}"/>
+        <echo/>
+        <echo/>
+    </target>
+
+
+    <target name="main" depends="init">
+	    <antcall target="cleandir"/>
+        <antcall target="makedir"/>
+  		<antcall target="transform"/>  
+		<antcall target="compileclasses"/>
+		<antcall target="copyfiles"/> 	
+		<antcall target="buildjar"/>  
+    </target>
+
+	<target name="makedir">
+		<mkdir dir="${workspace}"/>
+		<mkdir dir="${workspace}/${app-serv-dir}"/>
+		<mkdir dir="${workspace}/${app-web-dir}"/>
+		<mkdir dir="${builddir}"/>
+		<mkdir dir="${builddir}/${app-serv-dir}"/>
+		<mkdir dir="${builddir}/${app-serv-dir}/build/classes"/>
+		<mkdir dir="${builddir}/${app-serv-dir}/build/classes/META-INF"/>
+		<mkdir dir="${builddir}/${app-web-dir}"/>
+		<mkdir dir="${builddir}/${app-web-dir}/filestore"/>
+		<mkdir dir="${builddir}/${app-web-dir}/WEB-INF"/>
+		<mkdir dir="${builddir}/${app-web-dir}/WEB-INF/lib"/>
+		<mkdir dir="${builddir}/${app-web-dir}/WEB-INF/classes"/>
+		
+    </target>
+	
+	<target name="cleandir">
+		 <antcall target="cleanbuilddir"/>
+		 <antcall target="cleanworkspacedir"/>
+	</target>
+	
+	<target name="cleanbuilddir" >
+        <delete dir="${builddir}/${app-serv-dir}"/>
+		 <delete dir="${builddir}/${app-web-dir}"/>
+    </target>
+	
+	<target name="cleanworkspacedir">
+        <delete dir="${workspace}/${app-serv-dir}"/>
+		 <delete dir="${workspace}/${app-web-dir}"/>
+        
+    </target>
+	
+
+	<target name="transform">
+		<echo message="Transforming model to entity classes"/>
+		 <java jar="${saxonlib}" fork="true" >
+			<arg value="${modelfile}"/>
+			<arg value="${xsltdir-service}/db-entity-class.xslt"/>
+		 </java>
+		 <echo message="Transforming model to DAO"/>
+		 <java jar="${saxonlib}" fork="true" >
+			<arg value="${modelfile}"/>
+			<arg value="${xsltdir-service}/db-dao-class.xslt"/>
+		 </java>
+
+		 <echo message="Transforming model to web controller classes"/>
+		 <java jar="${saxonlib}" fork="true" >
+			<arg value="${modelfile}"/>
+			<arg value="${xsltdir-web}/web-controller.xslt"/>
+		 </java>
+		 <echo message="Transforming model to web JSP"/>
+		 <java jar="${saxonlib}" fork="true" >
+			<arg value="${modelfile}"/>
+			<arg value="${xsltdir-web}/web-jsp.xslt"/>
+		 </java>
+	</target>
+
+	 <target name="compileclasses">
+	 <echo message="${fullclasspath}"/>
+        <javac srcdir="${workspace}/${app-serv-dir}/src"
+               destdir="${builddir}/${app-serv-dir}/build/classes"
+               includes="**/*.java"  classpath="${fullclasspath}"
+               deprecation="yes" debug="yes"/>
+
+		<javac srcdir="${workspace}/${app-web-dir}/src"
+               destdir="${builddir}/${app-web-dir}/WEB-INF/classes"
+               includes="**/*.java"  classpath="${fullclasspath};${builddir}/${app-serv-dir}/build/classes"
+               deprecation="yes" debug="yes"/>
+
+    </target>
+
+	<target name="copyfiles">
+		<!-- copy config file -->
+		<copy todir="${builddir}/${app-web-dir}/WEB-INF" >
+            <fileset dir="${configdir-web}" >
+                <include name="spring-servlet.xml" />
+				<include name="web.xml" />
+            </fileset>
+		</copy>
+		
+		<!-- copy web content -->
+		<copy todir="${builddir}/${app-web-dir}" >
+            <fileset dir="${workspace}/${app-web-dir}/WebContent" >
+                <include name="*.jsp" />
+            </fileset>
+		</copy>  
+
+		<!-- copy lib files to web -->
+		<copy todir="${builddir}/${app-web-dir}/WEB-INF/lib" >
+            <fileset dir="${libdir-web}" >
+                <include name="*.jar" />
+            </fileset>
+			<fileset dir="${libdir-service}" >
+                <include name="*.jar" />
+            </fileset>
+		</copy>
+	</target>
+
+	
+	<target name="buildjar" depends="init">
+		<copy todir="${builddir}/${app-serv-dir}/build/classes/com/mfu/util" >
+            <fileset dir="${configdir-service}" >
+                <include name="*.*" />
+            </fileset>
+		</copy>
+		<jar destfile="${builddir}/${app-web-dir}/WEB-INF/lib/app-service-client.jar">
+            <fileset dir="${builddir}/${app-serv-dir}/build/classes">
+				<include name="**/*.*" />
+            </fileset>
+        </jar>
+
+		<!-- jar WEB -->
+		<jar destfile="${builddir}/${app-web-dir}.war">
+            <fileset dir="${builddir}/${app-web-dir}">
+				<include name="**/*.*" />
+            </fileset>
+        </jar>
+	</target>
+
+</project>
+
